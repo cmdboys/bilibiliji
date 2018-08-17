@@ -1,0 +1,16 @@
+{% extends "./template/layout.html" %}
+
+{% block body %}
+
+<h1>thinkjs</h1>
+
+<h1>{{objData.videoInfo.videoData.pic}}</h1>
+<img src="{{objData.videoInfo.videoData.pic}}" alt="">
+{% endblock %}
+
+{% block js %}
+<script>
+  var __playInfo = {{artData.playInfo | safe}}
+  var __videoInfo = {{artData.videoInfo | safe}}
+</script>
+{% endblock %}
