@@ -30,8 +30,7 @@ module.exports = class extends Base {
           playInfo: playInfo.body
         },
         objData: {
-          videoInfo: JSON.parse(videoInfo.body),
-          playInfo: JSON.parse(playInfo.body)
+          video: getValues.video
         }
       })
       

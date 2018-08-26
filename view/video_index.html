@@ -1,16 +1,118 @@
 {% extends "./template/layout.html" %}
 
+{% block css %}
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<style>
+    html, body{
+        height: 100%;
+        width: 100%;
+        position: relative;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+    }
+    body{
+        background-position: top center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+    .cover-box{
+        background-color: rgba(0, 0, 0, .65);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+    .center {
+        max-width: 600px;
+        padding: 0 15px;
+        margin: 0 auto;
+    }
+
+    .myvideo {
+        width: 100%;
+        height: 400px;
+        margin-top: 20px;
+    }
+    .video-box{
+        margin-bottom: 10px;
+    }
+    @media all and (max-width: 500px) {
+        .myvideo {
+            height: 260px;
+        }
+    }
+    .btn{
+        margin-bottom: 10px;
+    }
+</style>
+{% endblock %}
+
 {% block body %}
 
-<h1>thinkjs</h1>
+<div class="cover-box">
+    <div class="center" id="mainContent">
+        <div class="video-box">
 
-<h1>{{objData.videoInfo.videoData.pic}}</h1>
-<img src="{{objData.videoInfo.videoData.pic}}" alt="">
+        </div>
+
+        <div class="form">
+            <a type="button" class="btn btn-success btn-block need-cover" target="_blank">下载封面</a>
+            <a type="button" class="btn btn-success btn-block need-danmu" target="_blank">下载弹幕</a>
+            <!--<a type="button" class="btn btn-success btn-block need-download" download="title-time.mp4">下载地址，解析中...</a>-->
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block js %}
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 <script>
   var __playInfo = {{artData.playInfo | safe}}
   var __videoInfo = {{artData.videoInfo | safe}}
+
+  var parseUrl = 'https://www.parsevideo.com/api.php'
+  var output = {}
+  output.bgImg = ''
+  output.iframe = '<iframe class="myvideo" src="//player.bilibili.com/player.html?aid=<<aid>>&amp;cid=<<cid>>&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>'
+  output.danmu = 'https://comment.bilibili.com/<<id>>.xml'
+  output.d = 'https://www.bilibili.com/video/av/{{objData.video}}'
+  // 尝试设置背景图片
+  try{
+    output.bgImg = __videoInfo.videoData.pic.replace('http://', 'https://')
+  }catch (e) {
+
+  }
+
+  // 尝试设置视频
+  try{
+    output.iframe = output.iframe.replace('<<aid>>', __videoInfo.videoData.aid)
+    output.iframe = output.iframe.replace('<<cid>>', __videoInfo.videoData.cid)
+  }catch (e) {
+
+  }
+
+  // 尝试设置弹幕
+  try {
+    output.danmu = output.danmu.replace('<<id>>', __videoInfo.upData.mid)
+  }catch (e) {
+
+  }
+
+
+  $(document.body).css({
+    backgroundImage: 'url(' + output.bgImg +')'
+  })
+  $('.need-cover').attr('href', output.bgImg)
+  $('.need-danmu').attr('href', output.danmu)
+
+  $('.video-box').append($(output.iframe))
+
+
+
 </script>
 {% endblock %}
