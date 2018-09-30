@@ -3,16 +3,17 @@
   "description": "application created by thinkjs",
   "version": "1.0.0",
   "author": "Jon-Millent <millent@126.com>",
-  "scripts": {
-
+  "scripts": {},
+  "bin": {
+    "bilibiliji": "bin/index.js"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "balanced-match": "^1.0.0",
+    "fluent-ffmpeg": "^2.1.2",
     "qs": "^6.5.2"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "repository": "",
   "license": "MIT",
   "engines": {
